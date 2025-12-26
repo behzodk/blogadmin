@@ -161,3 +161,49 @@
   margin: 1em 0;
   border-radius: 0.5rem;
 }
+
+.quote-block {
+  position: relative;
+  margin: 0;
+  padding: 2.25rem 2.75rem 2rem 3.25rem;
+  border-left: 4px solid var(--primary);
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, var(--muted) 0%, var(--background) 100%);
+  color: var(--foreground);
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "Georgia", serif;
+  font-size: 1.2rem;
+  line-height: 1.75;
+  font-style: italic;
+  quotes: "\201C" "\201D" "\2018" "\2019";
+  box-shadow: 0 12px 24px -20px color-mix(in oklch, var(--foreground) 40%, transparent);
+}
+
+.quote-block::before,
+.quote-block::after {
+  position: absolute;
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "Georgia", serif;
+  font-size: 3.25rem;
+  line-height: 1;
+  color: color-mix(in oklch, var(--primary) 70%, transparent);
+  opacity: 0.5;
+}
+
+.quote-block::before {
+  content: open-quote;
+  top: 0.35rem;
+  left: 0.9rem;
+}
+
+.quote-block::after {
+  content: close-quote;
+  bottom: -0.25rem;
+  right: 1rem;
+}
+
+.quote-block p {
+  margin: 0;
+}
+
+.quote-block p + p {
+  margin-top: 0.75rem;
+}

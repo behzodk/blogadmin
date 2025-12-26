@@ -25,7 +25,7 @@ export type Post = {
 
 export type ContentBlock = {
   id: string
-  type: "text" | "image" | "video"
+  type: "text" | "image" | "video" | "quote"
   content: string
   order: number
 }
@@ -185,7 +185,12 @@ export function AdminDashboard() {
         return
       }
 
-      await replaceSections(data.id, updatedPost.contentBlocks)
+      const sectionsError = await replaceSections(data.id, updatedPost.contentBlocks)
+      if (sectionsError) {
+        setError(sectionsError.message || "Unable to update post sections")
+        setIsSaving(false)
+        return
+      }
       const mergedPost = {
         ...updatedPost,
         id: data.id.toString(),
@@ -205,7 +210,12 @@ export function AdminDashboard() {
         return
       }
 
-      await replaceSections(created.id, updatedPost.contentBlocks)
+      const sectionsError = await replaceSections(created.id, updatedPost.contentBlocks)
+      if (sectionsError) {
+        setError(sectionsError.message || "Unable to create post sections")
+        setIsSaving(false)
+        return
+      }
       const mapped = mapDbPostToPost({
         ...created,
         sections: updatedPost.contentBlocks.map((block) => ({
@@ -310,7 +320,10 @@ const mapDbPostToPost = (row: any): Post => {
 }
 
 const replaceSections = async (postId: string, blocks: ContentBlock[]) => {
-  await supabase.from("sections").delete().eq("post_id", postId)
+  const { error: deleteError } = await supabase.from("sections").delete().eq("post_id", postId)
+  if (deleteError) {
+    return deleteError
+  }
 
   if (!blocks.length) return
 
@@ -321,5 +334,8 @@ const replaceSections = async (postId: string, blocks: ContentBlock[]) => {
     position: block.order ?? index,
   }))
 
-  await supabase.from("sections").insert(payload)
+  const { error: insertError } = await supabase.from("sections").insert(payload)
+  if (insertError) {
+    return insertError
+  }
 }
