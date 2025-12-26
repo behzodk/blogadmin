@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { GripVertical, Trash2, ChevronUp, ChevronDown, Type, ImageIcon, Video, Upload } from 'lucide-react'
+import { GripVertical, Trash2, ChevronUp, ChevronDown, Type, ImageIcon, Video, Upload, Quote } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -35,6 +35,8 @@ export function ContentBlockEditor({
         return <ImageIcon className="h-4 w-4" />
       case "video":
         return <Video className="h-4 w-4" />
+      case "quote":
+        return <Quote className="h-4 w-4" />
     }
   }
 
@@ -187,6 +189,22 @@ export function ContentBlockEditor({
                   )}
                 </div>
               )}
+            </div>
+          )}
+
+          {block.type === "quote" && (
+            <div className="space-y-2">
+              <Label htmlFor={`content-${block.id}`}>Quote</Label>
+              <Textarea
+                id={`content-${block.id}`}
+                placeholder="Enter quote text..."
+                value={block.content}
+                onChange={(e) => onUpdate(block.id, e.target.value)}
+                rows={4}
+              />
+              <p className="text-xs text-muted-foreground">
+                This will render as a styled quote in the preview.
+              </p>
             </div>
           )}
         </div>

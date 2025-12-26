@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { ArrowLeft, Save, Eye, Type, ImageIcon, Video } from 'lucide-react'
+import { ArrowLeft, Save, Eye, Type, ImageIcon, Video, Quote } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -31,11 +31,12 @@ export function PostEditor({ post, onSave, onBack, isSaving }: PostEditorProps) 
   const [author, setAuthor] = useState(post?.author || "Admin User")
   const [contentBlocks, setContentBlocks] = useState<ContentBlock[]>(post?.contentBlocks || [])
 
-  const handleAddBlock = (type: "text" | "image" | "video") => {
+  const handleAddBlock = (type: "text" | "image" | "video" | "quote") => {
+    const defaultContent = type === "text" ? "<p>Start typing...</p>" : type === "quote" ? "Add quote..." : ""
     const newBlock: ContentBlock = {
       id: Date.now().toString(),
       type,
-      content: type === "text" ? "<p>Start typing...</p>" : "",
+      content: defaultContent,
       order: contentBlocks.length,
     }
     setContentBlocks([...contentBlocks, newBlock])
@@ -213,6 +214,14 @@ export function PostEditor({ post, onSave, onBack, isSaving }: PostEditorProps) 
                   <Video className="mr-2 h-4 w-4" />
                   Video
                 </Button>
+                <Button
+                  onClick={() => handleAddBlock("quote")}
+                  variant="outline"
+                  size="sm"
+                >
+                  <Quote className="mr-2 h-4 w-4" />
+                  Quote
+                </Button>
               </div>
             </div>
 
@@ -224,7 +233,7 @@ export function PostEditor({ post, onSave, onBack, isSaving }: PostEditorProps) 
                   </div>
                   <h3 className="text-lg font-semibold mb-2">No content blocks yet</h3>
                   <p className="text-sm text-muted-foreground mb-6 text-pretty">
-                    Start building your post by adding text, images, or video blocks. You can rearrange them later.
+                    Start building your post by adding text, images, video, or quote blocks. You can rearrange them later.
                   </p>
                   <div className="flex items-center justify-center gap-2">
                     <Button onClick={() => handleAddBlock("text")} variant="outline">
@@ -238,6 +247,10 @@ export function PostEditor({ post, onSave, onBack, isSaving }: PostEditorProps) 
                     <Button onClick={() => handleAddBlock("video")} variant="outline">
                       <Video className="mr-2 h-4 w-4" />
                       Add Video
+                    </Button>
+                    <Button onClick={() => handleAddBlock("quote")} variant="outline">
+                      <Quote className="mr-2 h-4 w-4" />
+                      Add Quote
                     </Button>
                   </div>
                 </div>

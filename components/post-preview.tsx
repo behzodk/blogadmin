@@ -37,6 +37,12 @@ export function PostPreview({ post, onBack, onEdit }: PostPreviewProps) {
             className="w-full rounded-lg"
           />
         )
+      case "quote":
+        return (
+          <blockquote className="quote-block">
+            <p className="whitespace-pre-line">{block.content}</p>
+          </blockquote>
+        )
       default:
         return null
     }

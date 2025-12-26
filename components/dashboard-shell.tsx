@@ -19,7 +19,7 @@ export type Post = {
 
 export type ContentBlock = {
   id: string
-  type: "text" | "image" | "video"
+  type: "text" | "image" | "video" | "quote"
   content: string
   caption?: string
   order: number
